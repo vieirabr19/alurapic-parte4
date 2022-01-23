@@ -21,16 +21,19 @@ const routes: Routes = [
   {
     path: 'user/:userName',
     component: PhotoListComponent,
-    resolve: { photos: PhotoListResolver }
+    resolve: { photos: PhotoListResolver },
+    data: { title: 'Timeline' }
   },
   { 
     path: 'p/add', 
     component: PhotoFormComponent, 
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: { title: 'Photo upload' }
   },
   { 
     path: 'p/:photoId', 
-    component: PhotoDetailsComponent
+    component: PhotoDetailsComponent,
+    data: { title: 'Photo detail' }
   },
   { 
     path: 'not-found', 
