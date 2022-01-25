@@ -28,7 +28,11 @@ export class PhotoService {
     formData.append('description', description);
     formData.append('allowComments', allowComments ? 'true' : 'false');
     formData.append('imageFile', file);
-    return this.http.post(`${API_URL}/photos/upload`, formData);
+
+    return this.http.post(`${API_URL}/photos/upload`, formData, {
+      observe: 'events',
+      reportProgress: true
+    });
   }
 
   findById(photoId: number){

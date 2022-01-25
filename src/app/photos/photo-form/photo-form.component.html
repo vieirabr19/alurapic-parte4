@@ -1,4 +1,4 @@
-<form class="row mt-5" [formGroup]="form" (ngSubmit)="submit()">
+<form class="row mt-5" [formGroup]="form" (ngSubmit)="upload()">
   <div class="col-md-6 text-center">
     <div class="form-group" *ngIf="!preview; else previewImage">
       <input type="file" immediate-click hidden #fileInput accept="image/*" formControlName="file" (change)="handleFile(file = $event.target.files[0])">
@@ -26,10 +26,13 @@
       </label>
     </div>
 
-    <button type="submit" class="btn btn-primary btn-block" [disabled]="form.invalid">
-      Upload
-    </button>
+    <div *ngIf="!percentDone; else percent">
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="form.invalid">Upload</button>  
+      <a [routerLink]="['']" class="btn btn-secondary btn-block">Cancel</a>
+    </div>
 
-    <a class="btn btn-secondary btn-block">Cancel</a>
+    <ng-template #percent>
+      <div class="text-center display-4">uploading {{ percentDone }}%</div>
+    </ng-template>
   </div>
 </form>
