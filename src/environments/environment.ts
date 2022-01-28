@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000',
-  apiUrlImgs: 'http://localhost:3000/imgs/'
+  apiUrlImgs: 'http://localhost:3000/imgs/',
+  serverLog: 'http://localhost:7000'
 };
 
 /*
