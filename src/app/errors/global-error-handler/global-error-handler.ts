@@ -21,7 +21,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     const url = location instanceof PathLocationStrategy ? location.path() : '';
     const message = error.message ? error.message : error.toString();
 
-    if(environment.production) router.navigate(['/error']);
+    if(environment.production) router.navigate(['error']);
 
     stacktrace.fromError(error)
       .then(stackframes => {
