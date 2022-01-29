@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { PlatformDetectorService } from 'src/app/core/platform-detector/platform-detector.service';
 
@@ -10,22 +11,27 @@ import { PlatformDetectorService } from 'src/app/core/platform-detector/platform
   styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
-  loginForm: FormGroup;
   @ViewChild('userNameInput') userNameInput: ElementRef<HTMLInputElement>;
+  loginForm: FormGroup;
+  fromUrl: string;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private platformDetectorService: PlatformDetectorService
+    private platformDetectorService: PlatformDetectorService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => this.fromUrl = params['fromUrl']);
+    
     this.loginForm = this.fb.group({
       userName: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
-    
+
+  
     this.platformDetectorService.isPlatformBrowser() && this.userNameInput.nativeElement.focus();
   }
 
@@ -34,7 +40,10 @@ export class SigninComponent implements OnInit {
     const password = this.loginForm.get('password').value;
 
     this.authService.autentications(userName, password).subscribe(
-      () => this.router.navigate(['user', userName]),
+      () => this.fromUrl 
+        ? this.router.navigateByUrl(this.fromUrl, {skipLocationChange: true})
+        : this.router.navigate(['user', userName])
+      ,
       error => {
         console.log(error);
         this.platformDetectorService.isPlatformBrowser() && this.userNameInput.nativeElement.focus();
